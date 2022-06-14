@@ -4,21 +4,42 @@ function Post() {
     return {
         is_adding: false,
         is_editing: false,
-        posts: {},
+        is_single: false,
+        posts: [],
+        post_single: {},
+        comments: {},
 
         form: {
             title: "",
             body: "",
             id: "",
+            post_id: ""
         },
 
         init: function () {
             this.getAllPosts();
+            this.getAllComments();
         },
 
         getAllPosts() {
             axios.get(route("post.postList")).then((res) => {
                 this.posts = res.data;
+            });
+        },
+
+        getAllComments() {
+            axios.get(route('comment.commentList')).then((res) => {
+                this.comments = res.data;
+            });
+        },
+
+        getPost(id) {
+            axios.get(route('post.show', id)).then((res) => {
+                this.getAllPosts();
+                this.getAllComments();
+                this.post_single = res.data;
+                this.is_single = true;
+                this.form.post_id = id;
             });
         },
 
@@ -28,6 +49,16 @@ function Post() {
                 this.getAllPosts();
                 alert("Post added successfully");
                 this.form = {};
+            });
+        },
+
+        addComment() {
+            axios.post(route('comment.store'), this.form).then((res) => {
+                this.getAllComments();
+                this.getAllPosts();
+                this.is_single = true;
+                alert("Comment added Successfully");
+                this.form =  {};
             });
         },
 
@@ -47,6 +78,10 @@ function Post() {
 
                 this.form = {};
             });
+        },
+
+        Single() {
+            this.is_single = false;
         },
 
         Edit() {

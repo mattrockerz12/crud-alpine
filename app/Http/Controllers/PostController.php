@@ -16,11 +16,16 @@ class PostController extends Controller
 
     public function postList()
     {
-        $posts = PostResource::collection(Post::with('user')->get());
+        $posts = PostResource::collection(Post::with(['user', 'comments'])->get());
 
         return response()->json($posts);
     }
 
+    public function show($id) {
+        $post = new PostResource(Post::with('user')->where('id', $id)->first());
+
+        return response()->json($post);
+    }
 
     public function create()
     {
