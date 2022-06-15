@@ -18,7 +18,7 @@ function Post() {
 
         init: function () {
             this.getAllPosts();
-            this.getAllComments();
+            // this.getAllComments();
         },
 
         getAllPosts() {
@@ -35,8 +35,8 @@ function Post() {
 
         getPost(id) {
             axios.get(route('post.show', id)).then((res) => {
-                this.getAllPosts();
-                this.getAllComments();
+                // this.getAllPosts();
+                // this.getAllComments();
                 this.post_single = res.data;
                 this.is_single = true;
                 this.form.post_id = id;
@@ -47,6 +47,7 @@ function Post() {
             axios.post(route("post.store"), this.form).then((res) => {
                 this.is_adding = false;
                 this.getAllPosts();
+
                 alert("Post added successfully");
                 this.form = {};
             });
@@ -57,6 +58,7 @@ function Post() {
                 this.getAllComments();
                 this.getAllPosts();
                 this.is_single = true;
+                this.getPost(this.form.post_id)
                 alert("Comment added Successfully");
                 this.form =  {};
             });

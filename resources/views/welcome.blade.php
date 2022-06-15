@@ -13,6 +13,7 @@
                                     <h3 class="mb-0" x-text='post.title'></h3>
                                     <div class="mb-1 text-muted" x-text='post.created_at'></div>
                                     <p class="card-text mb-auto" x-text='post.body'></p>
+                                    <h4>Posted by: <span x-text='post.user'></span></h4>
                                     <a @click="getPost(post.id)" href="javascript:void(0)" class="stretched-link">Continue reading</a>
                                 </div>
                             </div>
@@ -28,9 +29,11 @@
                                 <a @click="is_single = ! is_single" href="javascript:void(0)" class="btn btn-primary btn-sm">Back</a>
                                 <h4>Display Comments</h4>
                                 <hr />
-                                <strong x-text='post_single.author_name'></strong>
-                                <template x-for='comment in post_single.comments'>
-                                        <h3 x-text='comment.body'></h3>
+                                <template x-for='comment in post_single.comments' :key='comment.id'>
+                                        <div>
+                                            <strong x-text='comment.user'></strong>
+                                            <p x-text='comment.body'></p>
+                                        </div>
                                 </template>
                                 <h4>Add comment</h4>
                                 <form @submit.prevent="addComment">
